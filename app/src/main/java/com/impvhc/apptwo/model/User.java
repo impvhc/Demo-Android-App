@@ -1,58 +1,69 @@
+
 package com.impvhc.apptwo.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
-    private String createdAt;
-    private String phone;
-    private String sessionToken;
-    private String objectId;
-    private String username;
-    private String updatedAt;
+
+    @SerializedName("createdAt")
+    private String mCreatedAt;
+    @SerializedName("objectId")
+    private String mObjectId;
+    @SerializedName("phone")
+    private String mPhone;
+    @SerializedName("sessionToken")
+    private String mSessionToken;
+    @SerializedName("updatedAt")
+    private String mUpdatedAt;
+    @SerializedName("username")
+    private String mUsername;
 
     public String getCreatedAt() {
-        return this.createdAt;
+        return mCreatedAt;
     }
 
     public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getPhone() {
-        return this.phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getSessionToken() {
-        return this.sessionToken;
-    }
-
-    public void setSessionToken(String sessionToken) {
-        this.sessionToken = sessionToken;
+        mCreatedAt = createdAt;
     }
 
     public String getObjectId() {
-        return this.objectId;
+        return mObjectId;
     }
 
     public void setObjectId(String objectId) {
-        this.objectId = objectId;
+        mObjectId = objectId;
     }
 
-    public String getUsername() {
-        return this.username;
+    public String getPhone() {
+        return mPhone;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setPhone(String phone) {
+        mPhone = phone;
+    }
+
+    public String getSessionToken() {
+        return mSessionToken;
+    }
+
+    public void setSessionToken(String sessionToken) {
+        mSessionToken = sessionToken;
     }
 
     public String getUpdatedAt() {
-        return this.updatedAt;
+        return mUpdatedAt;
     }
 
     public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+        mUpdatedAt = updatedAt;
     }
+
+    public String getUsername() {
+        return mUsername;
+    }
+
+    public void setUsername(String username) {
+        mUsername = username;
+    }
+
 }

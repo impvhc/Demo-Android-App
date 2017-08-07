@@ -10,7 +10,7 @@ import dagger.Component;
  */
 
 @AppScope
-@Component(modules = { AppModule.class, NetworkModule.class})
+@Component(modules = { AppModule.class, NetworkModule.class, ApiModule.class})
 public interface AppComponent {
     ActivityComponent plus(ActivityModule activityModule);
 }

@@ -24,9 +24,4 @@ public class AppModule {
         return mApplication;
     }
 
-    @Provides
-    @AppScope
-    Test providesTest(){
-        return new Test();
-    }
 }

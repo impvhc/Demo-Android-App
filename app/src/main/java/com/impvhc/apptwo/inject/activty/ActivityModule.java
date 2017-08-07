@@ -1,6 +1,6 @@
 package com.impvhc.apptwo.inject.activty;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.impvhc.apptwo.presenter.SignInPresenter;
 import com.impvhc.apptwo.view.SignInView;
@@ -14,16 +14,16 @@ import dagger.Provides;
 
 @Module
 public class ActivityModule {
-    private final Activity activity;
+    private final Context context;
 
-    public ActivityModule(Activity activity) {
-        this.activity = activity;
+    public ActivityModule(Context context) {
+        this.context = context;
     }
 
     @Provides
     @ActivityScope
     public SignInView signInView(){
-        return new SignInView(activity);
+        return new SignInView(context);
     }
 
     @Provides

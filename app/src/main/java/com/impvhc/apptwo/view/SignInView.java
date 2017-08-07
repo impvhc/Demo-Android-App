@@ -38,8 +38,8 @@ public class SignInView extends ConstraintLayout{
 
     private final ProgressDialog progressDialog = new ProgressDialog(getContext());
 
-    public SignInView(Activity activity) {
-        super(activity);
+    public SignInView(Context context) {
+        super(context);
         inflate(getContext(), R.layout.activity_sign_in, this);
         ButterKnife.bind(this);
         progressDialog.setMessage("Validating User");
@@ -89,5 +89,8 @@ public class SignInView extends ConstraintLayout{
         } else {
             progressDialog.dismiss();
         }
+    }
+    public void showMessage(String message){
+        Snackbar.make(this,message,Snackbar.LENGTH_LONG).show();
     }
 }

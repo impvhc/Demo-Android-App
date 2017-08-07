@@ -6,7 +6,9 @@ import android.util.Log;
 
 import com.impvhc.apptwo.TwoApplication;
 import com.impvhc.apptwo.activity.MainActivity;
+import com.impvhc.apptwo.api.service.SignInService;
 import com.impvhc.apptwo.inject.activty.ActivityModule;
+import com.impvhc.apptwo.model.User;
 import com.impvhc.apptwo.util.TextUtil;
 import com.impvhc.apptwo.util.ViewUtil;
 import com.impvhc.apptwo.view.SignInView;
@@ -14,7 +16,10 @@ import com.impvhc.apptwo.view.SignInView;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -22,6 +27,9 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class SignInPresenter extends BasePresenter<Void,SignInView> {
+
+    @Inject
+    SignInService signInService;
 
     private final CompositeSubscription mCompositeSubscription = new CompositeSubscription();
     Observable<CharSequence> emailObservable;
@@ -33,6 +41,8 @@ public class SignInPresenter extends BasePresenter<Void,SignInView> {
 
     @Override
     public void onCreate() {
+        TwoApplication.get(view.getContext()).getComponent().plus(new ActivityModule(view.getContext())).inject(this);
+
         emailObservable = view.getObservableEmail();
         passwordObservable = view.getObservablePassword();
 
@@ -41,11 +51,14 @@ public class SignInPresenter extends BasePresenter<Void,SignInView> {
         mCompositeSubscription.add(getSubscriptionEnableNextBtn());
         mCompositeSubscription.add(getSubscriptionEmailErrorHandler());
         mCompositeSubscription.add(getSubscriptionPasswordErrorHandler());
+
+        Log.d("TAG", "onCreate: "+signInService);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mCompositeSubscription.clear();
     }
 
     private Subscription getSubscriptionNextBtn(){
@@ -53,7 +66,7 @@ public class SignInPresenter extends BasePresenter<Void,SignInView> {
                 .doOnNext(__ -> view.showLoading(true))
                 .subscribe(__ -> {
                     ViewUtil.hideKeyboard(view.getContext(),view.getWindowToken());
-                    MainActivity.start(view.getContext(),null);
+                    mCompositeSubscription.add(getSignInSubscription(view.getEmail(),view.getPassword()));
                 });
     }
 
@@ -84,5 +97,32 @@ public class SignInPresenter extends BasePresenter<Void,SignInView> {
                 .map(inputText -> (inputText.length() >= 0))
                 .distinctUntilChanged()
                 .subscribe(isValid -> view.errorPasswordHandle(isValid));
+    }
+
+    public Subscription getSignInSubscription(String username, String password){
+        return signInService.signIn(username,password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<User>() {
+                    @Override
+                    public void onCompleted() {
+                        view.showLoading(false);
+                        Log.d("TAG", "onCompleted: ");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("TAG", "onError: "+e);
+                        view.showLoading(false);
+                        view.showMessage("Username or Password is Invalid");
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        view.showLoading(false);
+                        view.showMessage(user.getUsername());
+                        Log.d("TAG", "onNext: "+user);
+                    }
+                });
     }
 }
