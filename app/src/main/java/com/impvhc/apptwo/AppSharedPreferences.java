@@ -18,15 +18,9 @@ public class AppSharedPreferences {
     public static final String PASSWORD = "password";
     /**/
 
-    private AppSharedPreferences(Context context) {
+    public AppSharedPreferences(Context context) {
         this.mContext = context;
         mSharedPreferences = context.getSharedPreferences(context.getPackageName(),Context.MODE_PRIVATE);
-    }
-
-    public static AppSharedPreferences getInstance(){
-        if(sInstance == null)
-            sInstance = new AppSharedPreferences(TwoApplication.get());
-        return sInstance;
     }
 
     public void putEmail(String email){

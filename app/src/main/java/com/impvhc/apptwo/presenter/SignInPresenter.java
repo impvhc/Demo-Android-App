@@ -31,6 +31,9 @@ public class SignInPresenter extends BasePresenter<Void,SignInView> {
     @Inject
     SignInService signInService;
 
+    @Inject
+    AppSharedPreferences appSharedPreferences;
+
     private final CompositeSubscription mCompositeSubscription = new CompositeSubscription();
     Observable<CharSequence> emailObservable;
     Observable<CharSequence> passwordObservable;
@@ -120,7 +123,7 @@ public class SignInPresenter extends BasePresenter<Void,SignInView> {
                     @Override
                     public void onNext(User user) {
                         view.showLoading(false);
-                        AppSharedPreferences.getInstance().putEmail(user.getUsername());
+                        appSharedPreferences.putEmail(user.getUsername());
                         HomeActivity.start(view.getContext(),null);
                         Log.d("TAG", "onNext: "+user);
                     }

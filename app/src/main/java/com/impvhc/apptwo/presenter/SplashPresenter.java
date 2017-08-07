@@ -5,16 +5,22 @@ import android.os.Handler;
 import android.text.TextUtils;
 
 import com.impvhc.apptwo.AppSharedPreferences;
+import com.impvhc.apptwo.TwoApplication;
 import com.impvhc.apptwo.activity.BaseActivity;
 import com.impvhc.apptwo.activity.HomeActivity;
 import com.impvhc.apptwo.activity.SignInActivity;
+import com.impvhc.apptwo.inject.activty.ActivityModule;
 import com.impvhc.apptwo.view.SplashView;
+
+import javax.inject.Inject;
 
 /**
  * Created by victor on 8/7/17.
  */
 
 public class SplashPresenter extends BasePresenter<Void,SplashView> {
+
+    @Inject
     AppSharedPreferences appSharedPreferences;
 
     public SplashPresenter(SplashView view) {
@@ -23,7 +29,7 @@ public class SplashPresenter extends BasePresenter<Void,SplashView> {
 
     @Override
     public void onCreate() {
-        appSharedPreferences = AppSharedPreferences.getInstance();
+        TwoApplication.get().getComponent().plus(new ActivityModule(view.getContext())).inject(this);
         checkFlow();
     }
 

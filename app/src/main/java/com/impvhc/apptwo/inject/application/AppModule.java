@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.impvhc.apptwo.AppSharedPreferences;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -25,4 +27,11 @@ public class AppModule {
     Application providesApplication() {
         return mApplication;
     }
+
+    @Provides
+    @AppScope
+    AppSharedPreferences providesSharedPreferences(Application application) {
+        return new AppSharedPreferences(application);
+    }
+
 }
