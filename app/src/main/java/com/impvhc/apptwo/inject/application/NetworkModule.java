@@ -38,14 +38,6 @@ public class NetworkModule {
         this.mBaseUrl = baseUrl;
     }
 
-    // Dagger will only look for methods annotated with @Provides
-    @Provides
-    @AppScope
-    // Application reference must come from AppModule.class
-    SharedPreferences providesSharedPreferences(Application application) {
-        return PreferenceManager.getDefaultSharedPreferences(application);
-    }
-
     @Provides
     @AppScope
     Cache provideOkHttpCache(Application application) {

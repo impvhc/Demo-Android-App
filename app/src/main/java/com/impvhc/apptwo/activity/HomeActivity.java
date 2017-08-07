@@ -4,17 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.impvhc.apptwo.presenter.SignInPresenter;
-import com.impvhc.apptwo.view.SignInView;
+import com.impvhc.apptwo.R;
+import com.impvhc.apptwo.presenter.HomePresenter;
+import com.impvhc.apptwo.view.HomeView;
 
 import javax.inject.Inject;
 
-public class SignInActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity {
 
     public static void start(Context context, Bundle bundle){
-        Intent intent = new Intent(context,SignInActivity.class);
+        Intent intent = new Intent(context,HomeActivity.class);
         if(bundle != null){
             intent.putExtras(bundle);
         }
@@ -23,10 +23,10 @@ public class SignInActivity extends BaseActivity {
     }
 
     @Inject
-    SignInView view;
+    HomeView view;
 
     @Inject
-    SignInPresenter presenter;
+    HomePresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

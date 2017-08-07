@@ -14,15 +14,19 @@ import com.impvhc.apptwo.inject.application.NetworkModule;
 
 public class TwoApplication extends Application{
 
+    private static TwoApplication mAppContext;
+
     AppComponent mComponent;
 
-    public static TwoApplication get(Context context) {
-        return (TwoApplication) context.getApplicationContext();
+    public static TwoApplication get() {
+        return mAppContext;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mAppContext = (TwoApplication) getApplicationContext();
+
         // Dagger%COMPONENT_NAME%
         mComponent = DaggerAppComponent.builder()
                 // list of modules that are part of this component need to be created here too

@@ -1,10 +1,12 @@
 package com.impvhc.apptwo.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.impvhc.apptwo.R;
 import com.impvhc.apptwo.TwoApplication;
 import com.impvhc.apptwo.inject.activty.ActivityComponent;
 import com.impvhc.apptwo.inject.activty.ActivityModule;
@@ -21,8 +23,26 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public ActivityComponent getComponent(Activity activity){
-        return TwoApplication.get(this)
+        return TwoApplication.get()
                 .getComponent()
                 .plus(new ActivityModule(activity));
+    }
+
+    public static void finish(Activity activity){
+        activity.finish();
+    }
+
+    public static void transitionLeft(Activity activity){
+        activity.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    public static void transitionRight(Activity activity){
+        activity.overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        transitionRight(this);
     }
 }

@@ -1,11 +1,11 @@
 package com.impvhc.apptwo.presenter;
 
-import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.impvhc.apptwo.AppSharedPreferences;
 import com.impvhc.apptwo.TwoApplication;
-import com.impvhc.apptwo.activity.MainActivity;
+import com.impvhc.apptwo.activity.HomeActivity;
 import com.impvhc.apptwo.api.service.SignInService;
 import com.impvhc.apptwo.inject.activty.ActivityModule;
 import com.impvhc.apptwo.model.User;
@@ -41,7 +41,7 @@ public class SignInPresenter extends BasePresenter<Void,SignInView> {
 
     @Override
     public void onCreate() {
-        TwoApplication.get(view.getContext()).getComponent().plus(new ActivityModule(view.getContext())).inject(this);
+        TwoApplication.get().getComponent().plus(new ActivityModule(view.getContext())).inject(this);
 
         emailObservable = view.getObservableEmail();
         passwordObservable = view.getObservablePassword();
@@ -73,7 +73,7 @@ public class SignInPresenter extends BasePresenter<Void,SignInView> {
     private Subscription getSubscriptionSignUpTv(){
         return view.getObservableSignUp()
                 .subscribe(__ -> {
-                    MainActivity.start(view.getContext(),null);
+                    HomeActivity.start(view.getContext(),null);
                 });
     }
 
@@ -120,7 +120,8 @@ public class SignInPresenter extends BasePresenter<Void,SignInView> {
                     @Override
                     public void onNext(User user) {
                         view.showLoading(false);
-                        view.showMessage(user.getUsername());
+                        AppSharedPreferences.getInstance().putEmail(user.getUsername());
+                        HomeActivity.start(view.getContext(),null);
                         Log.d("TAG", "onNext: "+user);
                     }
                 });
